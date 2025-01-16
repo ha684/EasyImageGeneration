@@ -1,4 +1,4 @@
-# AI Image Generator Web App
+# AI Image Generator
 
 ## Features
 
