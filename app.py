@@ -4,6 +4,8 @@ import torch
 from PIL import Image
 from model_load import load_llama_model, load_stablediffusion_model
 from utils import generate_image, generate_image_prompt
+import requests
+from bs4 import BeautifulSoup
 
 # Sample topics with descriptions
 SAMPLE_TOPICS = {
@@ -18,12 +20,21 @@ SAMPLE_TOPICS = {
 }
 
 def extract_topic_from_url(url):
-    """
-    Placeholder function to extract topic from a paper URL
-    You can implement paper parsing logic here
-    """
-    # TODO: Implement paper parsing
-    return "Sample topic from paper"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    # Tìm thẻ div lưu bài tin list__news-up cate
+    news_box_div  = soup.find("div", {"class": "list__news-up cate"})
+    news_items = news_box_div.find_all("div", {"class":"box-category-content"})
+
+    news_array = []
+
+    # Duyệt qua cấc bài tin
+    for item in news_items[:1]:
+        title = item.find("a").text.strip()
+        intro = item.find("p").text.strip()
+        news_array.append(title + "\n" + intro)
+    return news_array[0]
 
 def process_input(input_text, input_type="text", history=[]):
     """
