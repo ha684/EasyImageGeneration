@@ -62,7 +62,7 @@ def use_sample_topic(evt: gr.SelectData):
 
 # Load models at startup
 print("Loading models...")
-llama_pipe = load_llama_model()
+llama_pipe = load_llama_model("microsoft/Phi-3.5-mini-instruct")
 sd_pipe = load_stablediffusion_model()
 print("Models loaded successfully!")
 
