@@ -4,7 +4,7 @@ import torch
 from transformers import pipeline
 from diffusers import StableDiffusion3Pipeline
 
-def load_llama_model(model_id="unsloth/Llama-3.2-3B-bnb-4bit"):
+def load_llama_model(model_id="meta-llama/Llama-3.2-3B-Instruct"):
     pipe = pipeline(
         "text-generation",
         model=model_id,
