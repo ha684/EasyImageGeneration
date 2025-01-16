@@ -51,11 +51,14 @@ def clear_conversation():
     """
     return [], None
 
-def use_sample_topic(topic):
+def use_sample_topic(evt: gr.SelectData):
     """
     Handle sample topic selection
     """
-    return topic
+    # Get the topic name from the clicked index
+    topics = list(SAMPLE_TOPICS.keys())
+    selected_topic = topics[evt.index]
+    return selected_topic
 
 # Load models at startup
 print("Loading models...")
@@ -93,16 +96,15 @@ with gr.Blocks() as demo:
         gr.Markdown("### Try These Sample Topics")
     
     with gr.Row():
-        sample_gallery = gr.Gallery(
-            label="Sample Topics",
-            value=[
-                (None, topic, description) 
-                for topic, description in SAMPLE_TOPICS.items()
-            ],
-            columns=4,
-            object_fit="contain",
-            height="auto"
-        ).style(grid=2)
+        # Create a grid of sample topics using HTML
+        with gr.Column(scale=1):
+            sample_grid = gr.Dataset(
+                components=[gr.Textbox()],
+                samples=[[topic] for topic in SAMPLE_TOPICS.keys()],
+                label="Sample Topics",
+                samples_per_page=8,
+                type="index"
+            )
     
     with gr.Row():
         # Buttons
@@ -115,7 +117,7 @@ with gr.Blocks() as demo:
         height=300
     )
     
-    # Handle button clicks and gallery selection
+    # Handle button clicks and sample selection
     submit_btn.click(
         fn=process_input,
         inputs=[input_text, input_type, chatbot],
@@ -128,10 +130,9 @@ with gr.Blocks() as demo:
         outputs=[chatbot, output_image]
     )
     
-    # Handle sample gallery clicks
-    sample_gallery.select(
+    # Handle sample selection
+    sample_grid.select(
         fn=use_sample_topic,
-        inputs=[],
         outputs=input_text
     )
     
