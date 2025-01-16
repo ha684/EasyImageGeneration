@@ -21,7 +21,7 @@ def generate_image_prompt(pipe, topic):
     ]
     output = pipe(messages, **generation_args)
     
-    return output[0]['generated_text']
+    return str(output[0]['generated_text'])
 
 def generate_image(pipe,prompt):
     image = pipe(
