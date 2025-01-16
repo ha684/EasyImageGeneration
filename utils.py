@@ -1,10 +1,10 @@
 def generate_image_prompt(pipe, topic):
     
     generation_args = {
-        "max_new_tokens": 500,
+        "max_new_tokens": 100,
         "return_full_text": False,
         "temperature": 1.5,
-        "do_sample": False,
+        "do_sample": True,
     }
     messages = [
         {"role": "system", "content": "You are a helpfull assistant"},

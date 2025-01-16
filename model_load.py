@@ -24,5 +24,6 @@ def load_stablediffusion_model(model_id="stabilityai/stable-diffusion-3.5-medium
     pipe = StableDiffusion3Pipeline.from_pretrained(
         model_id, 
         torch_dtype=torch.float16,
+        device_map="balanced"
     )
     return pipe
